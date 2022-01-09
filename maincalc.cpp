@@ -2,8 +2,21 @@
 #include "ui_maincalc.h"
 #include <QJSEngine>
 
+/* TODO:
+ *  abs, pi+e, %, log, ln
+ *
+ *  handle keys?
+ *  handle Enter as =  -->  https://stackoverflow.com/questions/25637171/qt-key-pressevent-enter
+ *  memory not lineEdit
+ *  expression invisible as labels?
+ *  history gets too long, make history a list
+ *  M+, M-; memory a label?
+ *
+ *  trivia about numbers API??
+ */
 
 const QString defVal = "0";
+
 
 MainCalc::MainCalc(QWidget *parent)
     : QMainWindow(parent)
@@ -88,7 +101,9 @@ void MainCalc::pressEqual() {
 
     QString resultVal = QString::number(expression.evaluate(dispVal).toNumber(), 'g', 16);
     ui->label->setText(histVal + " = " + resultVal);
-    ui->lineEdit->setText(resultVal);
+    // Only set expression to result if we get a valid result:
+    if(QString::compare(resultVal.toLower(), "nan"))
+      ui->lineEdit->setText(resultVal);
 }
 
 void MainCalc::pressDelete() {
