@@ -55,12 +55,15 @@ void MainCalc::pressNumber() {
     QString btnVal = btn->text();
     QString dispVal = ui->lineEdit->text();
 
-//    if(dispVal.toDouble() == 0) {
-    if(dispVal.isEmpty() //TODO
+    if(dispVal.isEmpty()
        || !QString::compare(dispVal, "0") || !QString::compare(dispVal, "0.0")
 //       || !dispVal[0].isDigit() || !dispVal[dispVal.length()].isDigit()
+       || !QString::compare(dispVal.toLower(), "nan")
        ) {
         ui->lineEdit->setText(btnVal);
+    } else if(dispVal.toDouble() && !QString::compare(btnVal, "sqrt(")) {
+        QString newVal = btnVal + dispVal;
+        ui->lineEdit->setText(newVal);
     } else {
         QString newVal = dispVal + btnVal;
         ui->lineEdit->setText(newVal);
@@ -68,9 +71,11 @@ void MainCalc::pressNumber() {
 }
 
 void MainCalc::pressEqual() {
+    // Evaluate expression:
     QString dispVal = ui->lineEdit->text();
     QJSEngine expression;
 
+    // Special cases for certain functions:
     dispVal = dispVal.replace("^", "**");
     dispVal = dispVal.replace("sqrt", "Math.sqrt");
 
@@ -79,11 +84,14 @@ void MainCalc::pressEqual() {
 }
 
 void MainCalc::pressDelete() {
+    // Remove whole expression:
     ui->lineEdit->setText(defVal);
 }
 
 void MainCalc::pressBackspace() {
+    // Remove last character from expression:
     QString dispVal = ui->lineEdit->text();
+
     dispVal.chop(1);
     if(dispVal.isEmpty())
       dispVal = defVal;
