@@ -20,8 +20,9 @@ private:
 
 private slots:
     void pressNumber();
-//    void pressMath();
     void pressEqual();
+    void pressDelete();
+    void pressBackspace();
 
 };
 #endif // MAINCALC_H

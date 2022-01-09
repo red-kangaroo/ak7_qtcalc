@@ -3,14 +3,17 @@
 #include <QJSEngine>
 
 
+const QString defVal = "0";
+
 MainCalc::MainCalc(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainCalc)
 {
     ui->setupUi(this);
-    ui->lineEdit->setText("0.0");
+    ui->lineEdit->setText(defVal);
 
-    const int btns = 18;
+    // Symbol buttons (numbers and math signs):
+    const int btns = 19;
     QPushButton* numberButtons[btns] = {
         ui->pushButton_15,
         ui->pushButton_11,
@@ -29,12 +32,16 @@ MainCalc::MainCalc(QWidget *parent)
         ui->pushButton_19,
         ui->pushButton_22,
         ui->pushButton_20,
-        ui->pushButton_23
+        ui->pushButton_23,
+        ui->pushButton_26
     };
     for(int i = 0; i < btns; i++) {
         connect(numberButtons[i], SIGNAL(released()), this, SLOT(pressNumber()));
     }
+    // Individual buttons with special functions:
     connect(ui->pushButton_24, SIGNAL(released()), this, SLOT(pressEqual()));
+    connect(ui->pushButton_30, SIGNAL(released()), this, SLOT(pressDelete()));
+    connect(ui->pushButton_27, SIGNAL(released()), this, SLOT(pressBackspace()));
 
 }
 
@@ -64,6 +71,22 @@ void MainCalc::pressEqual() {
     QString dispVal = ui->lineEdit->text();
     QJSEngine expression;
 
+    dispVal = dispVal.replace("^", "**");
+    dispVal = dispVal.replace("sqrt", "Math.sqrt");
+
     double resultVal = expression.evaluate(dispVal).toNumber();
     ui->lineEdit->setText(QString::number(resultVal, 'g', 16));
+}
+
+void MainCalc::pressDelete() {
+    ui->lineEdit->setText(defVal);
+}
+
+void MainCalc::pressBackspace() {
+    QString dispVal = ui->lineEdit->text();
+    dispVal.chop(1);
+    if(dispVal.isEmpty())
+      dispVal = defVal;
+
+    ui->lineEdit->setText(dispVal);
 }
