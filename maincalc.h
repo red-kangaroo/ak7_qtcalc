@@ -24,5 +24,9 @@ private slots:
     void pressDelete();
     void pressBackspace();
 
+    void pressMemoryP();
+    void pressMemoryM();
+    void pressMemoryRecall();
+    void pressMemoryClear();
 };
 #endif // MAINCALC_H

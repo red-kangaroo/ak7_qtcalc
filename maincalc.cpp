@@ -42,6 +42,10 @@ MainCalc::MainCalc(QWidget *parent)
     connect(ui->pushButton_24, SIGNAL(released()), this, SLOT(pressEqual()));
     connect(ui->pushButton_30, SIGNAL(released()), this, SLOT(pressDelete()));
     connect(ui->pushButton_27, SIGNAL(released()), this, SLOT(pressBackspace()));
+    connect(ui->pushButton_7, SIGNAL(released()), this, SLOT(pressMemoryP()));
+    connect(ui->pushButton_8, SIGNAL(released()), this, SLOT(pressMemoryM()));
+    connect(ui->pushButton, SIGNAL(released()), this, SLOT(pressMemoryRecall()));
+    connect(ui->pushButton_9, SIGNAL(released()), this, SLOT(pressMemoryClear()));
 
 }
 
@@ -73,14 +77,18 @@ void MainCalc::pressNumber() {
 void MainCalc::pressEqual() {
     // Evaluate expression:
     QString dispVal = ui->lineEdit->text();
+    QString histVal = ui->label->text();
     QJSEngine expression;
 
+    // Prepare history entry:
+    histVal = histVal + "\n" + dispVal;
     // Special cases for certain functions:
     dispVal = dispVal.replace("^", "**");
     dispVal = dispVal.replace("sqrt", "Math.sqrt");
 
-    double resultVal = expression.evaluate(dispVal).toNumber();
-    ui->lineEdit->setText(QString::number(resultVal, 'g', 16));
+    QString resultVal = QString::number(expression.evaluate(dispVal).toNumber(), 'g', 16);
+    ui->label->setText(histVal + " = " + resultVal);
+    ui->lineEdit->setText(resultVal);
 }
 
 void MainCalc::pressDelete() {
@@ -97,4 +105,25 @@ void MainCalc::pressBackspace() {
       dispVal = defVal;
 
     ui->lineEdit->setText(dispVal);
+}
+
+void MainCalc::pressMemoryP() {
+    QString dispVal = ui->lineEdit->text();
+    QString memVal = ui->lineEdit_2->text();
+    // TODO
+    ui->lineEdit_2->setText(dispVal);
+}
+
+void MainCalc::pressMemoryM() {
+
+}
+
+void MainCalc::pressMemoryRecall() {
+    QString dispVal = ui->lineEdit->text();
+    QString memVal = ui->lineEdit_2->text();
+    ui->lineEdit->setText(dispVal + memVal);
+}
+
+void MainCalc::pressMemoryClear() {
+    ui->lineEdit_2->setText("");
 }
