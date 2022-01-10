@@ -2,6 +2,8 @@
 #define MAINCALC_H
 
 #include <QMainWindow>
+#include <QJSEngine>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainCalc; }
@@ -18,11 +20,17 @@ public:
 private:
     Ui::MainCalc *ui;
 
+    void displayHistory();
+    void displayHelp();
+    void displayWelcome();
+
 private slots:
     void pressNumber();
     void pressEqual();
     void pressDelete();
     void pressBackspace();
+    void pressLast();
+    void pressHelp();
 
     void pressMemoryP();
     void pressMemoryM();
