@@ -5,6 +5,8 @@
 
 A very simple calculator built with the Qt framework (version 6.2.2).
 
+![](calc.png "AK7Calc")
+
 
 ## Help
 

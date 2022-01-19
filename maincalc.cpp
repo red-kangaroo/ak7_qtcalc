@@ -3,7 +3,6 @@
 
 /* TODO:
  *  dice?, FUN
- *  image to readme
  *
  *  handle keys?
  *  handle Enter as =  -->  https://stackoverflow.com/questions/25637171/qt-key-pressevent-enter
