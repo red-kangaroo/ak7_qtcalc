@@ -5,7 +5,12 @@
 
 A very simple calculator built with the Qt framework (version 6.2.2).
 
+
+
+<div align="center">
+
 ![](calc.png "AK7Calc")
+</div>
 
 
 ## Help
