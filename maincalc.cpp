@@ -3,19 +3,18 @@
 
 /* TODO:
  *  dice?, FUN
- *  welcome and help screen text
+ *  image to readme
  *
  *  handle keys?
  *  handle Enter as =  -->  https://stackoverflow.com/questions/25637171/qt-key-pressevent-enter
  *  Space to start editing, enter for =
  *
- *  make expression lineEdit as invisible as labels?
- *
+ *  Android studio setup: https://doc.qt.io/qt-5/android-getting-started.html
  *  trivia about numbers API??
  */
 
 const QString defVal = "0";
-const int calcHistDepth = 6;
+const int calcHistDepth = 9;
 QList<QString> calcHistory;
 
 
@@ -225,7 +224,9 @@ void MainCalc::pressHelp() {
 
 void MainCalc::pressBlank() {
     ui->label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-    QString blankVal = "<pre>This space intentionally left blank.\n"
+    QString blankVal = "<pre>This space intentionally left blank.\n\n"
+                       "If you have an ideas what functionality would be\n"
+                       "useful to add here, please let me know!\n\n"
                        "(Press the button again.)</pre>";
 
     if(!QString::compare(ui->label->text(), blankVal))
@@ -257,7 +258,7 @@ void MainCalc::displayHistory() {
 void MainCalc::displayHelp() {
     ui->label->setAlignment(Qt::AlignLeft | Qt::AlignTop);
     QString helpVal = "<pre>AK7Calc Help\n\n"
-                      "DEL delete all     BCK backspace  LST last expression\n"
+                      "DEL delete all     BCK backspace    LST last expression\n"
                       "MR  memory recall  MC  memory clear\n"
                       "M±  put whole expression to memory with given sign\n"
                       "\n"
@@ -271,8 +272,9 @@ void MainCalc::displayHelp() {
 
 void MainCalc::displayWelcome() {
     ui->label->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-    QString startVal = "Welcome to AK7Calc!\n"
-                       "\n\n\n"
+    QString startVal = "\nWelcome to AK7Calc!\n"
+                       "\n"
+                       "Find more on GitHub in repository\nred-kangaroo/ak7_qtcalc\n\n"
                        "Press HELP if you need any help.";
 
     ui->label->setText(startVal);
