@@ -20,6 +20,8 @@ HEADERS += \
 FORMS += \
     maincalc.ui
 
+RC_ICONS = calc.ico
+
 TRANSLATIONS += \
     MyCalc_cs_CZ.ts
 CONFIG += lrelease

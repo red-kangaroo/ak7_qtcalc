@@ -24,6 +24,8 @@ MainCalc::MainCalc(QWidget *parent)
     , ui(new Ui::MainCalc)
 {
     ui->setupUi(this);
+    QCoreApplication::setApplicationName(QString("AK7Calc"));
+    setWindowTitle(QCoreApplication::applicationName());
 
     // Text field setup:
     ui->lineEdit->setText(defVal);
@@ -72,6 +74,9 @@ MainCalc::MainCalc(QWidget *parent)
     connect(ui->pushButton, SIGNAL(released()), this, SLOT(pressMemoryRecall()));
     connect(ui->pushButton_9, SIGNAL(released()), this, SLOT(pressMemoryClear()));
 
+    // TODO:
+    connect(ui->pushButton_34, SIGNAL(released()), this, SLOT(pressBlank()));
+    connect(ui->pushButton_36, SIGNAL(released()), this, SLOT(pressBlank()));
 }
 
 MainCalc::~MainCalc()
@@ -138,7 +143,15 @@ void MainCalc::pressEqual() {
 
 void MainCalc::pressDelete() {
     // Remove whole expression:
-    ui->lineEdit->setText(defVal);
+    QString dispVal = ui->lineEdit->text();
+
+    if(dispVal.isEmpty()
+       || !QString::compare(dispVal, "0") || !QString::compare(dispVal, "0.0")) {
+        // Clear history if expression is already clear:
+        calcHistory.clear();
+        displayHistory();
+    } else
+        ui->lineEdit->setText(defVal);
 }
 
 void MainCalc::pressBackspace() {
@@ -185,7 +198,12 @@ void MainCalc::pressMemoryM() {
 void MainCalc::pressMemoryRecall() {
     QString dispVal = ui->lineEdit->text();
     QString memVal = ui->label_2->text();
-    ui->lineEdit->setText(dispVal + memVal);
+
+    if(dispVal.isEmpty()
+       || !QString::compare(dispVal, "0") || !QString::compare(dispVal, "0.0")) {
+        ui->lineEdit->setText(memVal);
+    } else
+        ui->lineEdit->setText(dispVal + memVal);
 }
 
 void MainCalc::pressMemoryClear() {
@@ -203,6 +221,17 @@ void MainCalc::pressLast() {
 
 void MainCalc::pressHelp() {
     displayHelp();
+}
+
+void MainCalc::pressBlank() {
+    ui->label->setAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
+    QString blankVal = "<pre>This space intentionally left blank.\n"
+                       "(Press the button again.)</pre>";
+
+    if(!QString::compare(ui->label->text(), blankVal))
+        displayHistory();
+    else
+        ui->label->setText(blankVal);
 }
 
 void MainCalc::displayHistory() {
@@ -227,12 +256,12 @@ void MainCalc::displayHistory() {
 
 void MainCalc::displayHelp() {
     ui->label->setAlignment(Qt::AlignLeft | Qt::AlignTop);
-    QString helpVal = "<pre>[Help file for QtCalculator]\n"
+    QString helpVal = "<pre>AK7Calc Help\n\n"
                       "DEL delete all     BCK backspace  LST last expression\n"
                       "MR  memory recall  MC  memory clear\n"
                       "M±  put whole expression to memory with given sign\n"
                       "\n"
-                      "Press [Help] again to return to calculation history.</pre>";
+                      "Press HELP again to return to calculation history.</pre>";
 
     if(!QString::compare(ui->label->text(), helpVal))
         displayHistory();
@@ -242,8 +271,9 @@ void MainCalc::displayHelp() {
 
 void MainCalc::displayWelcome() {
     ui->label->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
-    QString startVal = "Welcome to QtCalculator!\n"
-                       "TODO";
+    QString startVal = "Welcome to AK7Calc!\n"
+                       "\n\n\n"
+                       "Press HELP if you need any help.";
 
     ui->label->setText(startVal);
 }

@@ -36,5 +36,7 @@ private slots:
     void pressMemoryM();
     void pressMemoryRecall();
     void pressMemoryClear();
+
+    void pressBlank();
 };
 #endif // MAINCALC_H
