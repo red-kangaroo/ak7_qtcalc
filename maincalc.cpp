@@ -4,6 +4,9 @@
 /* TODO:
  *  dice?, FUN
  *
+ *  set number of decimals
+ *  what about too long numbers??
+ *
  *  handle keys?
  *  handle Enter as =  -->  https://stackoverflow.com/questions/25637171/qt-key-pressevent-enter
  *  Space to start editing, enter for =
@@ -30,7 +33,7 @@ MainCalc::MainCalc(QWidget *parent)
     displayWelcome();
 
     // Symbol buttons (numbers and math signs):
-    const int btns = 25;
+    const int btns = 26;
     QPushButton* numberButtons[btns] = {
         ui->pushButton_15,
         ui->pushButton_11,
@@ -56,7 +59,8 @@ MainCalc::MainCalc(QWidget *parent)
         ui->pushButton_12,
         ui->pushButton_31,
         ui->pushButton_32,
-        ui->pushButton_33
+        ui->pushButton_33,
+        ui->pushButton_34
     };
     for(int i = 0; i < btns; i++) {
         connect(numberButtons[i], SIGNAL(released()), this, SLOT(pressNumber()));
@@ -73,7 +77,6 @@ MainCalc::MainCalc(QWidget *parent)
     connect(ui->pushButton_9, SIGNAL(released()), this, SLOT(pressMemoryClear()));
 
     // TODO:
-    connect(ui->pushButton_34, SIGNAL(released()), this, SLOT(pressBlank()));
     connect(ui->pushButton_36, SIGNAL(released()), this, SLOT(pressBlank()));
 }
 
@@ -95,7 +98,8 @@ void MainCalc::pressNumber() {
         ui->lineEdit->setText(btnVal);
     } else if((dispVal.toDouble() || !QString::compare(btnVal, "pi") || !QString::compare(btnVal, "e")) &&
               (!QString::compare(btnVal, "sqrt(") || !QString::compare(btnVal, "abs(")
-               || !QString::compare(btnVal, "log(") || !QString::compare(btnVal, "ln("))) {
+               || !QString::compare(btnVal, "log(") || !QString::compare(btnVal, "ln(")
+               || !QString::compare(btnVal, "round("))) {
         // If there is only a number in expression, function should go before it.
         // Don't handle not-just-number expressions, too tough. ;)
         QString newVal = btnVal + dispVal;
@@ -127,6 +131,7 @@ void MainCalc::pressEqual() {
     dispVal = dispVal.replace("abs", "Math.abs");
     dispVal = dispVal.replace("log", "Math.log10");
     dispVal = dispVal.replace("ln", "Math.log");
+    dispVal = dispVal.replace("round", "Math.round");
     dispVal = dispVal.replace("pi", "Math.PI");
     dispVal = dispVal.replace("e", "Math.E");
 

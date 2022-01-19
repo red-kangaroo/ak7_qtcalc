@@ -64,7 +64,7 @@ QPushButton:pressed {
       </property>
       <property name="font">
        <font>
-        <pointsize>12</pointsize>
+        <pointsize>10</pointsize>
         <bold>true</bold>
        </font>
       </property>
@@ -84,7 +84,7 @@ QPushButton:pressed {
 </string>
       </property>
       <property name="text">
-       <string/>
+       <string>round(</string>
       </property>
      </widget>
     </item>

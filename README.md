@@ -3,10 +3,10 @@
 # AK7Calc #
 </div>
 
-A very simple calculator built with the Qt framework (version 6.2.2).
+A very simple calculator built with the framework [Qt 6.2.2](https://www.qt.io/).
 
 
-
+<br>
 <div align="center">
 
 ![](calc.png "AK7Calc")
